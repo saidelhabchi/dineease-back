@@ -15,8 +15,8 @@ class OAuthUserController extends Controller
         /**
          * @var OAuthUser $potentialUser
          */
-        $potentialUser = OAuthUser::where('email', $data['email'])
-            ->where('profile_image', $data['image'])
+        $potentialUser = OAuthUser::where('email', $data['user']['email'])
+            ->where('profile_image', $data['user']['image'])
             ->first();
 
         if($potentialUser != null) {
@@ -32,9 +32,10 @@ class OAuthUserController extends Controller
              */
             $user = new OAuthUser();
 
-            $user->setAttribute('name', $data['name']);
-            $user->setAttribute('email', $data['email']);
-            $user->setAttribute('profile_image', $data['image']);
+            $user->setAttribute('name', $data['user']['name']);
+            $user->setAttribute('email', $data['user']['email']);
+            $user->setAttribute('profile_image', $data['user']['image']);
+            $user->setAttribute('role', $data['role']);
             $user->setCreatedAt(new \DateTimeImmutable());
             $user->setUpdatedAt(new \DateTimeImmutable());
 
