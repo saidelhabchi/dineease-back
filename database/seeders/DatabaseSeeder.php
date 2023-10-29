@@ -15,6 +15,12 @@ class DatabaseSeeder extends Seeder
     {
          User::factory(10)->create();
 
+         // to run all seeders at once use the below approach to call all seeds
+         // instead of running 'php artisan db:seed --class=FooSeeder' for each each
+         $this->call([
+            OAuthUserSeeder::class
+         ]);
+
         // \App\Models\User::factory()->create([
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
