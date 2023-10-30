@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\OAuthUserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -30,3 +31,5 @@ Route::get('/public',function(){
 Route::middleware('auth:sanctum')->get('/private',function(){
     return 'this route is private';
 });
+
+Route::post('/connect/oauth/check', [OAuthUserController::class, 'connectCheckAction']);
