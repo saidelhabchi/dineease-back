@@ -25,11 +25,23 @@ Route::post('/auth/login',[AuthController::class,'login']);
 Route::post('/auth/refresh-token',[AuthController::class,'refreshToken']);
 
 // this is how a public vs secure route looks like
-Route::get('/public',function(){
-    return 'this route is public';
-});
-Route::middleware('auth:sanctum')->get('/private',function(){
-    return 'this route is private';
-});
+/*
+    Route::get('/public',function(){
+        return 'this route is public';
+    });
+    Route::middleware('auth:sanctum')->get('/private',function(){
+        return 'this route is private';
+    });
+*/
+
+// testing roles
+/*
+    Route::middleware('auth:sanctum')->get('/just-clients',function(){
+        return "this row is just for clients";
+    })->middleware('restrictRole:client');
+    Route::middleware('auth:sanctum')->get('/just-managers',function(){
+        return "this row is just for managers";
+    })->middleware('restrictRole:manager');
+*/
 
 Route::post('/connect/oauth/check', [OAuthUserController::class, 'connectCheckAction']);
