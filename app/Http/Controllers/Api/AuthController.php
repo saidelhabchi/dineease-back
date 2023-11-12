@@ -15,7 +15,8 @@ class AuthController extends Controller
             $validateUser = Validator::make($request->all(),[
                 'name' => 'required',
                 'email' => 'required|email|unique:users,email',
-                'password' => 'required'
+                'password' => 'required',
+                'role' => 'in:client,manager',
             ]);
 
             if($validateUser->fails()){
@@ -30,6 +31,7 @@ class AuthController extends Controller
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => $request->password,
+                'role' => $request->role ?? 'client',
             ]);
 
             return response()->json([
@@ -41,6 +43,22 @@ class AuthController extends Controller
                 "status" => false,
                 "message" => $th->getMessage()
             ],500);
+        }
+    }
+    public function switchToManager(Request $request){
+        $user = $request->user();
+        if($user->role == 'client'){
+            array_push($user->role, 'manager');
+            $user->save();
+            return response()->json([
+                'status' => true,
+                'message' => 'you are now a manager!',
+            ], 200);
+        }else{
+            return response()->json([
+                'status' => false,
+                'message' => 'you are already a manager'
+            ]);
         }
     }
     public function login(Request $request){
@@ -72,6 +90,7 @@ class AuthController extends Controller
                 'message' => 'user logged in successfully',
                 'token' => $accessToken,
                 'refresh_token' => $refreshToken,
+                'role' => $user->role,
             ]);
 
         }catch(\Throwable $th){
